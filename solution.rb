@@ -34,7 +34,7 @@ for i in 0...base_sliced.length
 	#narrowed down to one by comparing length of first two lines
 	if possible_works.length > 1
 		for work in possible_works
-			if work.first.length == encrypted.first.length and work[1].length == encrypted[1].length
+			if work.first.length == encrypted.first.length and work[3].length == encrypted[3].length
 				decrypted_work = work
 			end
 		end
@@ -43,10 +43,44 @@ for i in 0...base_sliced.length
 	end
 end
 
+#Created hash with alphabet, uppercase and lowercase.
+cipher_key = {}
+alphabet = ('A'..'Z').to_a
+alphabet.each do |letter|
+	cipher_key[letter] = 1
+end
+
+alphabet = ('a'..'z').to_a
+alphabet.each do |letter|
+	cipher_key[letter] = 1
+end
+
+# p decrypted_work[line][letter]
+# p decrypted_work.first
+# while cipher_key.has_value? 1
+# 	if cipher_key.key? decrypted_work[line][letter]
+# 		cipher_key[decrypted_work[line][letter]] = encrypted[line][letter]
+# 	end
+# 	line +=1
+# 	letter +=1
+# end
+
+for string in 0...50
+	p decrypted_work[string]
+	for char in 0...decrypted_work[string].length
+		if cipher_key.key?(decrypted_work[string][char])
+			cipher_key[decrypted_work[string][char]] = encrypted[string][char]
+		end
+	end
+end
+
+
+p cipher_key
+
 File.open("deciphered.txt", "w+") { |file| file.write(decrypted_work) }
 
 
-
+  
 
 
 
