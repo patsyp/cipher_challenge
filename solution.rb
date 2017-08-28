@@ -44,38 +44,52 @@ for i in 0...base_sliced.length
 end
 
 #Created hash with alphabet, uppercase and lowercase.
-cipher_key = {}
+uppercase = {}
 alphabet = ('A'..'Z').to_a
 alphabet.each do |letter|
-	cipher_key[letter] = 1
+	uppercase[letter] = 1
 end
 
+lowercase = {}
 alphabet = ('a'..'z').to_a
 alphabet.each do |letter|
-	cipher_key[letter] = 1
+	lowercase[letter] = 1
 end
-
-# p decrypted_work[line][letter]
-# p decrypted_work.first
-# while cipher_key.has_value? 1
-# 	if cipher_key.key? decrypted_work[line][letter]
-# 		cipher_key[decrypted_work[line][letter]] = encrypted[line][letter]
-# 	end
-# 	line +=1
-# 	letter +=1
-# end
 
 for string in 0...50
 	p decrypted_work[string]
 	for char in 0...decrypted_work[string].length
-		if cipher_key.key?(decrypted_work[string][char])
-			cipher_key[decrypted_work[string][char]] = encrypted[string][char]
+		if uppercase.key?(decrypted_work[string][char])
+			uppercase[decrypted_work[string][char]] = encrypted[string][char]
+		end
+		if lowercase.key?(decrypted_work[string][char])
+			lowercase[decrypted_work[string][char]] = encrypted[string][char]
 		end
 	end
 end
 
+# Find missing letters in each alphabet hash.
+missing_values = []
+lowercase.each_key do |key|
+	if lowercase[key] == 1 
+		lowercase[key] = uppercase[key.capitalize]
+		if uppercase[key.capitalize] == 1
+			missing_values.push(key)
+		end
+	end
+end
 
+uppercase.each_key do |key|
+	if uppercase[key] == 1 
+		uppercase[key] = lowercase[key.downcase]
+	end
+end
+
+p missing_values
+
+cipher_key = uppercase.merge(lowercase)
 p cipher_key
+
 
 File.open("deciphered.txt", "w+") { |file| file.write(decrypted_work) }
 
