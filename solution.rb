@@ -95,6 +95,8 @@ end
 
 cipher_key = uppercase.merge(lowercase)
 
+p cipher_key
+#Decipher encripted work with key
 encrypted.each do |line|
 	for i in 0...line.length
 		if cipher_key.has_value?(line[i])
